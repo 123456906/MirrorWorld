@@ -7,8 +7,8 @@ import mindustry.content.Weathers;
 import mindustry.game.Team;
 import mindustry.graphics.g3d.*;
 import mindustry.type.Planet;
-import mindustry.world.meta.Env;
 import mindustry.type.Weather;
+import mindustry.world.meta.Env;
 
 public class MirrorSystemPlanets {
     public static Planet antichthon;
@@ -19,21 +19,21 @@ public class MirrorSystemPlanets {
         if(loaded) return;
         loaded = true;
 
-        // 1. 确保 AntichthonBlocks 和生成器的蓝图已加载
         AntichthonBlocks.load();
-        MirrorWorld.content.AntichthonGenerator.loadBlueprints();
+        AntichthonGenerator.loadBlueprints();
 
-        // ========== 对地星 (Antichthon) ==========
+        // Flip the two example vanilla progression flags requested by the mod theme.
+        Planets.serpulo.alwaysUnlocked = false;
+        Planets.tantros.alwaysUnlocked = true;
+
         antichthon = new Planet("antichthon", Planets.sun, 1f, 2);
-        antichthon.generator = new MirrorWorld.content.AntichthonGenerator(); // 当前包直接调用即可
+        antichthon.generator = new AntichthonGenerator();
         antichthon.localizedName = "Antichthon";
         antichthon.visible = true;
         antichthon.accessible = true;
         antichthon.alwaysUnlocked = true;
         antichthon.bloom = false;
         antichthon.defaultEnv = Env.terrestrial;
-
-        // 大气与光照
         antichthon.atmosphereColor = Color.valueOf("d89070");
         antichthon.atmosphereRadIn = 0.02f;
         antichthon.atmosphereRadOut = 0.28f;
@@ -41,26 +41,22 @@ public class MirrorSystemPlanets {
         antichthon.startSector = 5;
         antichthon.defaultCore = Blocks.coreShard;
 
-        // 行星本体 + 人造星环（赤道环带，MultiMesh 一起渲染）
+        // Retain the ring mesh; do not overwrite it with a plain hex mesh.
         antichthon.meshLoader = () -> new MultiMesh(
                 new HexMesh(antichthon, 6),
                 new RingMesh(antichthon)
         );
-        antichthon.meshLoader = () -> new HexMesh(antichthon, 6);
 
-        // 云层
         Color baseColor = Color.valueOf("d89070");
         Color c1 = baseColor.cpy().mul(0.9f);
         c1.a = 0.75f;
         Color c2 = Color.white.cpy().lerp(baseColor, 0.55f);
         c2.a = 0.75f;
-
         antichthon.cloudMeshLoader = () -> new MultiMesh(
                 new HexSkyMesh(antichthon, 11, 0.15f, 0.13f, 6, c1, 2, 0.45f, 0.9f, 0.38f),
                 new HexSkyMesh(antichthon, 1, 0.6f, 0.16f, 6, c2, 2, 0.45f, 1.0f, 0.41f)
         );
 
-        // 规则
         antichthon.ruleSetter = r -> {
             r.waveTeam = Team.crux;
             r.waves = true;
