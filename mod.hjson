@@ -1,23 +1,12 @@
 #the mod name as displayed in-game
-displayName: "MirrorWorld"
+displayName: "MirrorWorld: Parallax"
 
-#the internal name of your mod
+# Keep the stable internal id; content IDs and existing saves depend on it.
 name: "MirrorWorld"
 
-#your name
 author: "无固定作者"
-
-#the fully qualified main class of the mod
 main: "MirrorWorld.MirrorWorld"
-
-#the mod description as seen in the mod dialog
-description: "你瞅啥"
-
-#the mod version
-version: 2.2.0
-
-#the minimum game build required to run this mod
+description: "A science-fiction campaign of mirrored worlds, carrier fleets, and hostile frontiers."
+version: 2.3.0
 minGameVersion: 158
-
-#this is a java mod
 java: true
